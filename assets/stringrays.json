@@ -1,0 +1,17 @@
+{
+    "cadets": [
+     {
+        "name": "Elm Brunch with Bulma and Sass",
+        "nickname": "ondrej-tucek/elm-brunch-bulma-starter",
+        "img-path": "elm-bulma",
+        "pitch-url": "Elm, Bulma, Sass, Babel, Auto-Reload",
+        "description": "A simple Elm skeleton project with Bulma framework and Sass."
+     },
+      { "name": "Elm Brunch with Bulma and Sass",
+        "nickname": "ondrej-tucek/elm-brunch-bulma-starter",
+        "img-path": "elm-bulma",
+        "pitch-url": "Elm, Bulma, Sass, Babel, Auto-Reload",
+        "description": "A simple Elm skeleton project with Bulma framework and Sass."
+     }
+    ]
+  }
