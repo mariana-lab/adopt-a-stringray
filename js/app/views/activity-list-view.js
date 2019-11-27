@@ -23,8 +23,13 @@ define(function() {
     internals.elements.app.append(renderBall());
     internals.elements.ray = $("#ball-of-death");
 
-    internals.elements.app.append(renderStringRayCards(stringrays));
+    internals.elements.app.append(renderRayCardsDiv());
     internals.elements.rayCards = $("#string-cards");
+    internals.elements.rayCards.hide();
+    internals.elements.rayCards.append(renderStringRayCards(stringrays));
+    setTimeout(console.log(), 10000);
+    internals.elements.rayCards.show();
+    internals.elements.ray.hide();
   };
 
   function renderBall() {
@@ -38,55 +43,75 @@ define(function() {
 
   function renderForm(vimdiesels, stringrays) {
     var form =
-      '<form action="/action_page.php" id="adoption-form">' +
-      '<span class="inline-block">Vimdiesel:<br><select name="vimdiesel" form="carform">';
+      '<form id="adoption-form">' +
+      '<span class="inline-block">Vimdiesel:<br>' +
+      '<select id="vimdiesel-adopter">';
     vimdiesels.vimdiesels.forEach(
       element =>
         (form +=
-          '<option value="' + element.name + '">' + element.name + "</option>")
+          '<option value="' +
+          element.name +
+          '">' +
+          element.nickname +
+          "</option>")
     );
     form +=
       "</select></span>" +
-      '<span class="inline-block">StringRay:<br><select name="stringray" form="carform">';
+      '<span class="inline-block">StringRay:<br>' +
+      '<select id="stringray-adopted">';
     stringrays.stringrays.forEach(
       element =>
         (form +=
-          '<option value="' + element.name + '">' + element.name + "</option>")
+          '<option value="' +
+          element.name +
+          '">' +
+          element.nickname +
+          "</option>")
     );
     form +=
       "</select></span>" +
-      '<span class="inline-block">Barcode:<br><input type="text" name="fname"></span>' +
-      '<div><input type="submit"></div>' +
+      '<span class="inline-block">Barcode:<br><input type="text"></span>' +
+      '<div><input type="submit" value="ADOPT"></div>' +
       "</form>";
 
     return form;
   }
 
-  function renderStringRayCards(stringrays) {
+  function renderRayCardsDiv() {
     var cards = '<div id="string-cards"';
+    return cards + "</div>";
+  }
+
+  function renderStringRayCards(stringrays) {
+    var cards = "";
     var counter = 0;
     stringrays.stringrays.forEach(
       element =>
-        (cards += renderCard(element) + (++counter % 3 === 0 ? "<br>" : ""))
+        (cards +=
+          renderCard(element) +
+          ([3, 7, 10, 14, 17, 21].includes(++counter) ? "<br>" : ""))
     );
-    return cards + "</div>";
+    return cards;
   }
 
   function renderCard(stringray) {
     var card =
       '<div class="card inline-block">' +
-      '<span class="text content">' +
-      stringray.nickname +
-      "</span>" +
       '<img class="image content" src=' +
       stringray.img +
       ">" +
+      (stringray.orphan === "false"
+        ? '<img class="image content" src="img/adopted.png">'
+        : "") +
       '<video class="video content" controls>' +
       '<source src="' +
       stringray.pitch +
       '" type="video/mp4">' +
       '"Your browser does not support HTML5 video."' +
       "</video>" +
+      '<span class="text content">' +
+      stringray.nickname +
+      "</span>" +
       "</div>";
     return card;
   }
@@ -105,11 +130,13 @@ define(function() {
 
   function bindButtonPushHandler(handler) {
     //form on submit
-    $("#adopt-form").click(function(event) {
+    $("#adoption-form").submit(function(event) {
+      console.log(event);
+      event.preventDefault();
       var adoption = {};
-      //adoption.vimdieselname = event.target.value;
-      //adoption.stringrayname = event.target.value;
-      //adoption.promotioncode = event.target.value;
+      adoption.vimdieselname = event.currentTarget[0].value;
+      adoption.stringrayname = event.currentTarget[1].value;
+      adoption.promotioncode = "s" + event.currentTarget[2].value + "s";
       handler(adoption);
     });
   }
