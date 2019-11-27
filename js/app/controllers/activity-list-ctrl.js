@@ -1,10 +1,14 @@
 //every class starts with define, dependencies and a function
-define(["services/activity-service", "views/activity-list-view"], function( actService, listActView) {
+define(["services/activity-service", "views/activity-list-view"], function(
+  actService,
+  listActView
+) {
   var internals = {};
   var externals = {};
 
   externals.start = function() {
-    listActView.render(actService.getVimdieselsJson() ,actService.getStringRaysJson());
+    listActView.render(actService.vimdiesels, actService.stringrays);
+    console.log(actService.getName());
     bindEvents();
   };
 
@@ -14,9 +18,14 @@ define(["services/activity-service", "views/activity-list-view"], function( actS
   }
 
   function adoptHandler(adoption) {
-    //adoption.vimdieselname for checking the promotioncode
-    //adoption.promotioncode for checkin if its possible to update
-    //adoption.stringrayname for updating
+    console.log(adoption);
+    var validation = actService.validate(adoption);
+    if(validation.status){
+        //ask view to render success message - validation.message
+        //ask view to re render pictures
+    }
+    //ask view to render not successful - validation.message
+    
   }
 
   function buttonHandler() {}
