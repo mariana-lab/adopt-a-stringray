@@ -1,18 +1,18 @@
 /*! HTML5 Boilerplate v7.1.0 | MIT License | https://html5boilerplate.com/ */
 
 /* main.css 1.0.0 | MIT License | https://github.com/h5bp/main.css#readme */
+
 /*
  * What follows is the result of much research on cross-browser styling.
  * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
  * Kroc Camen, and the H5BP dev community and team.
  */
 
- 
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
 
-   html {
+html {
     color: #222;
     font-size: 1em;
     line-height: 1.4;
@@ -57,12 +57,7 @@ hr {
  * https://github.com/h5bp/html5-boilerplate/issues/440
  */
 
-audio,
-canvas,
-iframe,
-img,
-svg,
-video {
+audio, canvas, iframe, img, svg, video {
     vertical-align: middle;
 }
 
@@ -95,29 +90,66 @@ textarea {
     padding: 0.2em 0;
 }
 
-
-
-
- /* ==========================================================================
+/* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
+.inline-block {
+    display: inline-block;
+}
+
+.card {
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+    width: 20%;
+}
+.content {
+    position: absolute;
+    width: 100%;
+}
+
+.video.content {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.8s, opacity 0.8s linear;
+}
+
+.image.content {
+    visibility: visible;
+    opacity: 0.8;
+    transition: visibility 0.8s, opacity 0.8s linear;
+}
+
+.text.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 36px;
+    transform: translate(-5%, -5%);
+}
+
+.card:hover .video {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.8s, opacity 0.8s linear;
+}
+
+.card:hover .image, .card:hover .text{
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.8s, opacity 0.8s linear;
+}
+
+.card:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
- /* ==========================================================================
+/* ==========================================================================
    Helper classes
    ========================================================================== */
 
@@ -125,8 +157,8 @@ textarea {
  * Hide visually and from screen readers
  */
 
- .hidden {
-  display: none !important;
+.hidden {
+    display: none !important;
 }
 
 /*
@@ -139,15 +171,16 @@ textarea {
 */
 
 .visuallyhidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-  white-space: nowrap; /* 1 */
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+    /* 1 */
 }
 
 /*
@@ -156,15 +189,14 @@ textarea {
 * https://www.drupal.org/node/897638
 */
 
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  position: static;
-  width: auto;
-  white-space: inherit;
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+    white-space: inherit;
 }
 
 /*
@@ -172,7 +204,7 @@ textarea {
 */
 
 .invisible {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 /*
@@ -187,109 +219,84 @@ textarea {
 *    `:before` to contain the top-margins of child elements.
 */
 
-.clearfix:before,
-.clearfix:after {
-  content: " "; /* 1 */
-  display: table; /* 2 */
+.clearfix:before, .clearfix:after {
+    content: " ";
+    /* 1 */
+    display: table;
+    /* 2 */
 }
 
 .clearfix:after {
-  clear: both;
+    clear: both;
 }
 
- 
 /* ==========================================================================
    EXAMPLE Media Queries for Responsive Design.
    These examples override the primary ('mobile first') styles.
    Modify as content requires.
    ========================================================================== */
 
-   @media only screen and (min-width: 35em) {
+@media only screen and (min-width: 35em) {
     /* Style adjustments for viewports that meet the condition */
 }
 
-@media print,
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 1.25dppx),
-       (min-resolution: 120dpi) {
+@media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx), (min-resolution: 120dpi) {
     /* Style adjustments for high resolution devices */
 }
 
- 
 /* ==========================================================================
    Print styles.
    Inlined to avoid the additional HTTP request:
    https://www.phpied.com/delay-loading-your-print-css/
    ========================================================================== */
 
-   @media print {
-    *,
-    *:before,
-    *:after {
+@media print {
+    *, *:before, *:after {
         background: transparent !important;
-        color: #000 !important; /* Black prints faster */
+        color: #000 !important;
+        /* Black prints faster */
         -webkit-box-shadow: none !important;
         box-shadow: none !important;
         text-shadow: none !important;
     }
-
-    a,
-    a:visited {
+    a, a:visited {
         text-decoration: underline;
     }
-
     a[href]:after {
         content: " (" attr(href) ")";
     }
-
     abbr[title]:after {
         content: " (" attr(title) ")";
     }
-
     /*
      * Don't show links that are fragment identifiers,
      * or use the `javascript:` pseudo protocol
      */
-
-    a[href^="#"]:after,
-    a[href^="javascript:"]:after {
+    a[href^="#"]:after, a[href^="javascript:"]:after {
         content: "";
     }
-
     pre {
         white-space: pre-wrap !important;
     }
-    pre,
-    blockquote {
+    pre, blockquote {
         border: 1px solid #999;
         page-break-inside: avoid;
     }
-
     /*
      * Printing Tables:
      * http://css-discuss.incutio.com/wiki/Printing_Tables
      */
-
     thead {
         display: table-header-group;
     }
-
-    tr,
-    img {
+    tr, img {
         page-break-inside: avoid;
     }
-
-    p,
-    h2,
-    h3 {
+    p, h2, h3 {
         orphans: 3;
         widows: 3;
     }
-
-    h2,
-    h3 {
+    h2, h3 {
         page-break-after: avoid;
     }
 }
-
-
