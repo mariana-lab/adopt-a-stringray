@@ -20,6 +20,12 @@ define(function() {
     internals.elements.app = $("#app");
     internals.elements.app.append(renderForm(vimdiesels, stringrays));
 
+    internals.elements.app.append(renderSuccessDiv());
+    internals.elements.success = $("#success-div");
+
+    internals.elements.app.append(renderFailDiv());
+    internals.elements.fail = $("#fail-div");
+
     internals.elements.app.append(renderBall());
     internals.elements.ray = $("#ball-of-death");
 
@@ -27,7 +33,6 @@ define(function() {
     internals.elements.rayCards = $("#string-cards");
     internals.elements.rayCards.hide();
     internals.elements.rayCards.append(renderStringRayCards(stringrays));
-    setTimeout(console.log(), 10000);
     internals.elements.rayCards.show();
     internals.elements.ray.hide();
   };
@@ -46,11 +51,11 @@ define(function() {
       '<form id="adoption-form">' +
       '<span class="inline-block">Vimdiesel:<br>' +
       '<select id="vimdiesel-adopter">';
-    vimdiesels.vimdiesels.forEach(
+    vimdiesels.forEach(
       element =>
         (form +=
           '<option value="' +
-          element.name +
+          element.nickname +
           '">' +
           element.nickname +
           "</option>")
@@ -59,11 +64,11 @@ define(function() {
       "</select></span>" +
       '<span class="inline-block">StringRay:<br>' +
       '<select id="stringray-adopted">';
-    stringrays.stringrays.forEach(
+    stringrays.forEach(
       element =>
         (form +=
           '<option value="' +
-          element.name +
+          element.nickname +
           '">' +
           element.nickname +
           "</option>")
@@ -78,14 +83,13 @@ define(function() {
   }
 
   function renderRayCardsDiv() {
-    var cards = '<div id="string-cards"';
-    return cards + "</div>";
+    return '<div id="string-cards"></div>';
   }
 
   function renderStringRayCards(stringrays) {
     var cards = "";
     var counter = 0;
-    stringrays.stringrays.forEach(
+    stringrays.forEach(
       element =>
         (cards +=
           renderCard(element) +
@@ -100,7 +104,7 @@ define(function() {
       '<img class="image content" src=' +
       stringray.img +
       ">" +
-      (stringray.orphan === "false"
+      (stringray.orphan === false
         ? '<img class="image content" src="img/adopted.png">'
         : "") +
       '<video class="video content" controls>' +
@@ -116,7 +120,12 @@ define(function() {
     return card;
   }
 
-  function renderButton() {}
+  function renderSuccessDiv() {
+    return '<div id="success-div"></div>';
+  }
+  function renderFailDiv() {
+    return '<div id="fail-div"></div>';
+  }
 
   function renderCards(data) {}
 
@@ -129,15 +138,14 @@ define(function() {
   function setIntervalX(callback, delay, repetitions) {}
 
   function bindButtonPushHandler(handler) {
-    //form on submit
     $("#adoption-form").submit(function(event) {
-      console.log(event);
       event.preventDefault();
       var adoption = {};
       adoption.vimdieselname = event.currentTarget[0].value;
       adoption.stringrayname = event.currentTarget[1].value;
       adoption.promotioncode = "s" + event.currentTarget[2].value + "s";
-      handler(adoption);
+
+       handler(adoption);
     });
   }
 

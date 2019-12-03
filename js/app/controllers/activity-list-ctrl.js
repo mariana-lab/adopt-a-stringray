@@ -7,9 +7,12 @@ define(["services/activity-service", "views/activity-list-view"], function(
   var externals = {};
 
   externals.start = function() {
-    listActView.render(actService.vimdiesels, actService.stringrays);
-    console.log(actService.getName());
-    bindEvents();
+    actService.fetchStringRays().done(function(data) {
+      actService.fetchVimDiesels().done(function(data) {
+        listActView.render(actService.vimdiesels, actService.stringrays);
+        bindEvents();
+      });
+    });
   };
 
   function bindEvents() {
@@ -18,14 +21,22 @@ define(["services/activity-service", "views/activity-list-view"], function(
   }
 
   function adoptHandler(adoption) {
-    console.log(adoption);
-    var validation = actService.validate(adoption);
-    if(validation.status){
+    actService.update().done(function() {
+      var validation = actService.validate(adoption);
+      console.log(validation);
+
+      if (validation.status) {
+        //save both
+        actService.saveVimdiesel(validation.vimdiesel);
+
+        actService.saveStringray(validation.stringray);
+        listActView.updateStringrayCard(validation.stringray);
+
         //ask view to render success message - validation.message
         //ask view to re render pictures
-    }
-    //ask view to render not successful - validation.message
-    
+      }
+      //ask view to render not successful - validation.message
+    });
   }
 
   function buttonHandler() {}
