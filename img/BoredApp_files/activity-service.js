@@ -3,7 +3,7 @@ define(function() {
   var internals = {};
   var externals = {};
 
-  internals.api = "http://192.168.2.53:1234";
+  internals.api = "http://localhost:1234";
 
   externals.getName = function() {
     $.ajax({
