@@ -18,6 +18,8 @@ define(["services/activity-service", "views/activity-list-view"], function(
   function bindEvents() {
     //for each event on the page give a handler
     listActView.bind("adoptButtonPush", adoptHandler);
+    listActView.bind("vimdieselsLinkPushed", adoptHandler);
+    listActView.bind("stringRaysLinkPushed", adoptHandler);
   }
 
   function adoptHandler(adoption) {

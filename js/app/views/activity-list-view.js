@@ -7,7 +7,9 @@ define(function() {
 
   internals.events = {
     //event and the associated bind function
-    adoptButtonPush: bindButtonPushHandler
+    adoptButtonPush: bindButtonPushHandler,
+    vimdieselsLinkPushed: bindVimdieselsLinkHandler,
+    stringRaysLinkPushed: bindStringraysLinkHandler
   };
 
   //good idea to invoke this function for last on the controller
@@ -19,6 +21,8 @@ define(function() {
   externals.render = function(vimdiesels, stringrays) {
     internals.elements.app = $("#app");
     internals.elements.app.append(renderForm(vimdiesels, stringrays));
+    internals.elements.form = $("#adoption-form");
+    internals.elements.form.hide();
 
     internals.elements.app.append(renderSuccessDiv());
     internals.elements.success = $("#success-div");
@@ -29,11 +33,17 @@ define(function() {
     internals.elements.app.append(renderBall());
     internals.elements.ray = $("#ball-of-death");
 
-    internals.elements.app.append(renderRayCardsDiv());
+    internals.elements.app.append(renderCardsDiv("vim"));
+    internals.elements.vimCards = $("#vim-cards");
+    internals.elements.vimCards.hide();
+    internals.elements.vimCards.append(renderCards([4, 7, 11, 14, 18, 21], vimdiesels));
+
+    internals.elements.app.append(renderCardsDiv("string"));
     internals.elements.rayCards = $("#string-cards");
     internals.elements.rayCards.hide();
-    internals.elements.rayCards.append(renderStringRayCards(stringrays));
-    internals.elements.rayCards.show();
+
+    internals.elements.rayCards.append(renderCards([3, 7, 10, 14, 17, 21], stringrays));
+    //internals.elements.rayCards.show();
     internals.elements.ray.hide();
   };
 
@@ -49,8 +59,8 @@ define(function() {
   function renderForm(vimdiesels, stringrays) {
     var form =
       '<form id="adoption-form">' +
-      '<span class="inline-block">Vimdiesel:<br>' +
-      '<select id="vimdiesel-adopter">';
+      '<select id="vimdiesel-adopter">' +
+      '<option selected="selected" disabled>VIMdiesel</option>"';
     vimdiesels.forEach(
       element =>
         (form +=
@@ -62,8 +72,8 @@ define(function() {
     );
     form +=
       "</select></span>" +
-      '<span class="inline-block">StringRay:<br>' +
-      '<select id="stringray-adopted">';
+      '<select id="stringray-adopted">'+
+      '<option selected="selected" disabled>STRINGray</option>"';
     stringrays.forEach(
       element =>
         (form +=
@@ -75,54 +85,55 @@ define(function() {
     );
     form +=
       "</select></span>" +
-      '<span class="inline-block">Barcode:<br><input type="text"></span>' +
+      '<span class="inline-block"><input type="text" value="PASSWORD"'+
+      'onblur="if(this.value==\'\'){ this.value=\'PASSWORD\'; this.style.color=\'#BBB\';}"'+
+      'onfocus="if(this.value==\'PASSWORD\'){ this.value=\'\'; this.style.color=\'#000\';}"'+
+      'style="color:#BBB;"></span>' +
       '<div><input type="submit" value="ADOPT"></div>' +
       "</form>";
 
     return form;
   }
 
-  function renderRayCardsDiv() {
-    return '<div id="string-cards"></div>';
+  function renderCardsDiv(cadets) {
+    return '<div id="'+cadets+'-cards"></div>';
   }
 
-  function renderStringRayCards(stringrays) {
+  function renderCards(array, cadets) {
     var cards = "";
     var counter = 0;
-    stringrays.forEach(
+    cadets.forEach(
       element =>
         (cards +=
           renderCard(element) +
-          ([3, 7, 10, 14, 17, 21].includes(++counter) ? "<br>" : ""))
+          (array.includes(++counter) ? "<br>" : ""))
     );
     return cards;
   }
 
-  function renderCard(stringray) {
+  function renderCard(cadet) {
     var card =
       '<div id="' +
-      stringray._id +
-      '" class="card inline-block">' + createCardContent(stringray)
+      cadet._id +
+      '" class="card inline-block">' + createCardContent(cadet)
        +
       "</div>";
     return card;
   }
 
-  function createCardContent(stringray){
+  function createCardContent(cadet){
+    var extraImg = (cadet.orphan === false ? '<img class="image content" src="img/adopted.png">' : "");
     return '<img class="image content" src=' +
-    stringray.img +
-    ">" +
-    (stringray.orphan === false
-      ? '<img class="image content" src="img/adopted.png">'
-      : "") +
+    cadet.img +
+    ">" + extraImg +
     '<video class="video content" controls>' +
     '<source src="' +
-    stringray.pitch +
+    cadet.pitch +
     '" type="video/mp4">' +
     '"Your browser does not support HTML5 video."' +
     "</video>" +
     '<span class="text content">' +
-    stringray.nickname +
+    cadet.nickname +
     "</span>";
   }
 
@@ -133,6 +144,7 @@ define(function() {
   };
 
   externals.showMessage = function(validation) {
+    console.log(validation);
     var div = validation.status ? internals.elements.fail : internals.elements.fail;
     div.empty();
     div.append(validation.message);
@@ -144,8 +156,6 @@ define(function() {
   function renderFailDiv() {
     return '<div id="fail-div"></div>';
   }
-
-  function renderCards(data) {}
 
   externals.renderText = function(data) {};
 
@@ -164,6 +174,41 @@ define(function() {
       adoption.promotioncode = "s" + event.currentTarget[2].value + "s";
 
       handler(adoption);
+    });
+  }
+
+  function bindVimdieselsLinkHandler(handler) {
+
+    $("#vimdiesels-title").click(function(event) {
+      /*event.preventDefault();
+      var adoption = {};
+      adoption.vimdieselname = event.currentTarget[0].value;
+      adoption.stringrayname = event.currentTarget[1].value;
+      adoption.promotioncode = "s" + event.currentTarget[2].value + "s";
+
+      handler(adoption);*/
+      internals.elements.form.hide();
+      internals.elements.vimCards.show();
+      internals.elements.rayCards.hide();
+      //hide stringrays cards
+      //create cards or show vimdiesels
+    });
+  }
+
+  function bindStringraysLinkHandler(handler) {
+    $("#stringrays-title").click(function(event) {
+      /*event.preventDefault();
+      var adoption = {};
+      adoption.vimdieselname = event.currentTarget[0].value;
+      adoption.stringrayname = event.currentTarget[1].value;
+      adoption.promotioncode = "s" + event.currentTarget[2].value + "s";
+
+      handler(adoption);*/
+      internals.elements.form.show();
+      internals.elements.vimCards.hide();
+      internals.elements.rayCards.show();
+      //hide stringrays cards
+      //create cards or show vimdiesels
     });
   }
 
