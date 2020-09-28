@@ -118,6 +118,12 @@ textarea {
     transition: visibility 0.8s, opacity 0.8s linear;
 }
 
+.play-img.content{
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.8s, opacity 0.8s linear; 
+}
+
 .image.content {
     visibility: visible;
     opacity: 0.8;
@@ -138,11 +144,17 @@ textarea {
     transition: visibility 0.8s, opacity 0.8s linear;
 }
 
-.card:hover .image, .card:hover .text{
+.card:hover .play-img {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.8s, opacity 0.8s linear;
+}
+
+/*.card:hover .image, .card:hover .text{
     visibility: hidden;
     opacity: 0;
     transition: visibility 0.8s, opacity 0.8s linear;
-}
+}*/
 
 .card:after {
     content: "";

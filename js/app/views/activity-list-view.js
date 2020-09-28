@@ -9,7 +9,8 @@ define(function() {
     //event and the associated bind function
     adoptButtonPush: bindButtonPushHandler,
     vimdieselsLinkPushed: bindVimdieselsLinkHandler,
-    stringRaysLinkPushed: bindStringraysLinkHandler
+    stringRaysLinkPushed: bindStringraysLinkHandler,
+    playImgPush: bindPlayImageHandler
   };
 
   //good idea to invoke this function for last on the controller
@@ -140,6 +141,8 @@ define(function() {
       cadet.img +
       ">" +
       extraImg +
+      '<img class="content play-img" src="img/play-button.png">'
+      /*
       '<video class="video content" controls>' +
       '<source src="' +
       cadet.pitch +
@@ -148,7 +151,7 @@ define(function() {
       "</video>" +
       '<span class="text content">' +
       cadet.nickname +
-      "</span>"
+      "</span>"*/
     );
   }
 
@@ -180,7 +183,27 @@ define(function() {
 
   externals.renderActivity = function(activity, src) {};
 
-  function setIntervalX(callback, delay, repetitions) {}
+  function bindPlayImageHandler(handler) {
+    
+    //1 fetch and add the video
+    //hide the play image
+    $(".card").click(function(event) {
+      var cadet = handler($(this).attr('id'));
+      
+      $(this)
+        .children(".play-img")
+        .remove();
+
+      $(this).append(
+        '<video class="video content" controls>' +
+          '<source src="' +
+          cadet.pitch +
+          '" type="video/mp4">' +
+          '"Your browser does not support HTML5 video."' +
+          "</video>"
+      );
+    });
+  }
 
   function bindButtonPushHandler(handler) {
     $("#adoption-form").submit(function(event) {

@@ -31,6 +31,22 @@ define(function() {
     });
   };
 
+  externals.getCadetById = function(id){
+    var cadet = {};
+    externals.vimdiesels.forEach(element => {
+      if(element._id === id){
+          cadet = element;
+      }
+    });
+
+    externals.stringrays.forEach(element => {
+      if(element._id === id){
+          cadet = element;
+      }
+    });
+    return cadet;
+  }
+
   externals.fetchStringRays = function() {
     return $.ajax({
       url: internals.api + "/stringrays/",

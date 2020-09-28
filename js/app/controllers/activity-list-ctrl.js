@@ -20,6 +20,7 @@ define(["services/activity-service", "views/activity-list-view"], function(
     listActView.bind("adoptButtonPush", adoptHandler);
     listActView.bind("vimdieselsLinkPushed", adoptHandler);
     listActView.bind("stringRaysLinkPushed", adoptHandler);
+    listActView.bind("playImgPush", videoHandler);
   }
 
   function adoptHandler(adoption) {
@@ -38,6 +39,10 @@ define(["services/activity-service", "views/activity-list-view"], function(
       }
       //ask view to render not successful - validation.message
     });
+  }
+
+  function videoHandler(id){
+    return actService.getCadetById(id); 
   }
 
   function buttonHandler() {}
